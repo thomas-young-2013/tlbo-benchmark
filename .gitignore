@@ -1,0 +1,8 @@
+.idea/
+*.pyc
+.DS_Store
+xgb_dataset/
+logs_test_110/
+smac*/
+data/
+*.log
