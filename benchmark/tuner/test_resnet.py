@@ -85,6 +85,9 @@ def train(class_num, epoch_num, config, x_train, y_train, x_val, y_val, seed=32)
     from torchvision.models.resnet import resnet18
     model = resnet18(num_classes=class_num).to(gpu_device)
 
+    x_train = np.transpose(x_train, (0, 3, 1, 2))
+    x_val = np.transpose(x_val, (0, 3, 1, 2))
+
     x_train_data = torch.from_numpy(x_train)
     y_train_data = torch.from_numpy(y_train)
     train_dataset = TensorDataset(x_train_data, y_train_data)
@@ -112,7 +115,7 @@ def train(class_num, epoch_num, config, x_train, y_train, x_val, y_val, seed=32)
         num_train_samples = 0
         num_val_samples = 0
         for i, data in enumerate(trainloader):
-            batch_x, batch_y = data[0], data[1]
+            batch_x, batch_y = data[0].float(), data[1].long()
             num_train_samples += len(batch_x)
             logits = model(batch_x.float().to(gpu_device))
             loss = loss_func(logits, batch_y.to(gpu_device))
@@ -133,7 +136,7 @@ def train(class_num, epoch_num, config, x_train, y_train, x_val, y_val, seed=32)
             model.eval()
             with torch.no_grad():
                 for i, data in enumerate(validloader):
-                    batch_x, batch_y = data[0], data[1]
+                    batch_x, batch_y = data[0].float(), data[1].long()
                     logits = model(batch_x.float().to(gpu_device))
                     val_loss = loss_func(logits, batch_y.to(gpu_device))
                     num_val_samples += len(batch_x)
@@ -147,7 +150,7 @@ def train(class_num, epoch_num, config, x_train, y_train, x_val, y_val, seed=32)
                 print('Epoch %d: Val loss %.4f, val acc %.4f' % (epoch_id, val_avg_loss, val_avg_acc))
 
         scheduler.step()
-        return 1 - val_avg_acc
+    return 1 - val_avg_acc
 
 
 def run(dataset_name):
