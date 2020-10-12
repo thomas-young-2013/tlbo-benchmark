@@ -29,7 +29,7 @@ def load_cifar_100():
     return (x_train, y_train), (x_test, y_test), cls_num
 
 
-def load_dataset(dataset_name='cifar-10'):
+def _load_dataset(dataset_name='cifar-10'):
     if dataset_name == 'cifar-10':
         return load_cifar_10()
     elif dataset_name == 'cifar-100':
@@ -52,3 +52,8 @@ def load_dataset(dataset_name='cifar-10'):
         return load_caltech(cls_num=256)
     else:
         raise ValueError('undefined dataset name!')
+
+
+def load_dataset(dataset_name='cifar-10'):
+    (x_train, y_train), (x_test, y_test), cls_num = _load_dataset(dataset_name)
+    return (x_train / 255.0, y_train), (x_test / 255.0, y_test), cls_num

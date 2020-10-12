@@ -10,7 +10,8 @@ def load_dog_breed():
     y_train = np.load(data_dir + 'y_train.npy')
     x_train = x_train.astype('float32')
 
-    x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=32)
+    x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.2, random_state=32,
+                                                        stratify=y_train)
     y_test = y_test.reshape(-1)
     y_train = y_train.reshape(-1)
     return (x_train, y_train), (x_test, y_test), cls_num
