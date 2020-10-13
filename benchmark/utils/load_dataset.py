@@ -16,6 +16,10 @@ def load_cifar_10():
     y_test = y_test.reshape(-1)
     x_train = x_train.astype('float32')
     x_test = x_test.astype('float32')
+
+    if x_train.shape[1] == 3:
+        x_train = x_train.transpose(0, 2, 3, 1)
+        x_test = x_test.transpose(0, 2, 3, 1)
     return (x_train, y_train), (x_test, y_test), cls_num
 
 
@@ -26,6 +30,10 @@ def load_cifar_100():
     y_test = y_test.reshape(-1)
     x_train = x_train.astype('float32')
     x_test = x_test.astype('float32')
+
+    if x_train.shape[1] == 3:
+        x_train = x_train.transpose(0, 2, 3, 1)
+        x_test = x_test.transpose(0, 2, 3, 1)
     return (x_train, y_train), (x_test, y_test), cls_num
 
 
